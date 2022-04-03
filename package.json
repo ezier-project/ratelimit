@@ -1,0 +1,33 @@
+{
+  "name": "ez-ratelimiter",
+  "version": "0.1.0",
+  "description": "The ez-iest ratelimiter in existance for nodejs.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write src/",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fronvo/ez-ratelimiter.git"
+  },
+  "keywords": [
+    "ratelimiter",
+    "simple",
+    "ez",
+    "nodejs"
+  ],
+  "author": "Shadofer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fronvo/ez-ratelimiter/issues"
+  },
+  "homepage": "https://github.com/Fronvo/ez-ratelimiter#readme",
+  "devDependencies": {
+    "prettier": "^2.6.1"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}

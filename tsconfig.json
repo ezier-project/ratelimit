@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "CommonJS",
+        "strict": true,
+        "declaration": true,
+        "outDir": "./dist",
+        "baseUrl": "src",
+        "removeComments": true
+    },
+    "include": ["src/**/*"],
+    "ts-node": {
+        "swc": true
+    }
+}
