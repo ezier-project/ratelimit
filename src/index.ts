@@ -20,7 +20,7 @@ interface EzOptions {
     clearDelay: number;
 }
 
-interface EzError {
+export interface EzError {
     message: string;
     code: number;
     currentPoints: number;
