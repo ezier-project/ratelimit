@@ -14,7 +14,9 @@
 
 # Installing
 
-`npm i ez-ratelimiter`
+```
+npm i ez-ratelimiter
+```
 
 # Examples
 
