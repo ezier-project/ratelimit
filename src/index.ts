@@ -1,15 +1,12 @@
 // **************************************************************** //
-//      The simplest rate-limiter in existance, for nodejs.         //
+//      The ez-iest rate-limiter in existance, for nodejs.         //
 // **************************************************************** //
 
 // Interfaces
-enum EzErrorCodes {
-    NOT_ENOUGH_POINTS = 1,
-}
-
-const EzErrorMessages = [
-    "The consumer doesn't have the required points for consumption.",
-];
+const EzErrors: { [key: string]: string } = {
+    NOT_ENOUGH_POINTS:
+        "The consumer doesn't have the required points for consumption.",
+};
 
 interface EzLimit {
     points: number;
@@ -20,17 +17,28 @@ interface EzOptions {
     clearDelay: number;
 }
 
-export interface EzError {
-    message: string;
-    code: number;
+export interface EzError extends Error {
     currentPoints: number;
     requestedPoints: number;
     maxPoints: number;
 }
 
 // Generic functions
-function getErrorMessage(errorCode: number): string {
-    return EzErrorMessages[errorCode - 1];
+function generateError(
+    name: string,
+    currentPoints: number,
+    requestedPoints: number,
+    maxPoints: number
+): EzError {
+    const errorData: EzError = {
+        name,
+        message: EzErrors[name],
+        currentPoints,
+        requestedPoints,
+        maxPoints,
+    };
+
+    return errorData;
 }
 
 // Instances
@@ -57,10 +65,7 @@ export class EzRateLimiter {
         this.start();
     }
 
-    async consumePoints(
-        consumerKey: string,
-        points: number
-    ): Promise<EzLimit> {
+    async consumePoints(consumerKey: string, points: number): Promise<EzLimit> {
         if (this.isStopped) {
             throw new Error("Can't consume while the ratelimiter is stopped.");
         }
@@ -92,17 +97,12 @@ export class EzRateLimiter {
         } else {
             // If new points will be higher than maxPoints prevent consumption
             if (consumer.points + points > this.maxPoints) {
-                const code = EzErrorCodes.NOT_ENOUGH_POINTS;
-
-                const errorResult: EzError = {
-                    message: getErrorMessage(code),
-                    code,
-                    currentPoints: consumer.points,
-                    requestedPoints: points,
-                    maxPoints: this.maxPoints,
-                };
-
-                throw errorResult;
+                throw generateError(
+                    'NOT_ENOUGH_POINTS',
+                    consumer.points,
+                    points,
+                    this.maxPoints
+                );
             } else {
                 // Checks passed, add points and consume
                 this.rateLimits[consumerKey].points += points;
