@@ -3,3 +3,51 @@
 <h1 align='center'>
 
 ![npm bundle size](https://img.shields.io/bundlephobia/min/ez-ratelimiter?style=for-the-badge) ![npm](https://img.shields.io/npm/dm/ez-ratelimiter?style=for-the-badge) ![NPM](https://img.shields.io/npm/l/ez-ratelimiter?style=for-the-badge) ![npm](https://img.shields.io/npm/v/ez-ratelimiter?style=for-the-badge)
+
+# Why?
+
+**This rate-limiter attempts to keep it e-z, with no additional functions.**
+
+**All in all a basic package to rate-limit your clients.**
+
+***Also used in the Fronvo [server](https://github.com/Fronvo/fronvo)***
+
+# Installing
+
+`npm i ez-ratelimiter`
+
+# Examples
+
+**Setup an instance of `EzRateLimiter`:**
+
+```ts
+import { EzRateLimiter } from 'ez-ratelimiter';
+
+const ezLimiter = new EzRateLimiter({
+    maxPoints: 10,
+    clearDelay: 1000
+});
+```
+
+**Consume points for a client:**
+```ts
+ezLimiter.consumePoints('client-uid', 5);
+```
+
+**Handle a consumption error:**
+
+```ts
+import { EzError } from 'ez-ratelimiter';
+
+ezLimiter.consumePoints('client-uid', 11)
+
+.catch((err: EzError) => {
+    console.log(`Client requested ${err.requestedPoints} when it has ${err.currentPoints} and maxPoints are ${err.maxPoints}`);
+});
+```
+
+**Stop the rate-limiter:**
+
+```ts
+ezLimiter.stop();
+```
