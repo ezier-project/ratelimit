@@ -42,7 +42,7 @@ import { EzError } from 'ez-ratelimiter';
 ezLimiter.consumePoints('client-uid', 11)
 
 .catch((err: EzError) => {
-    console.log(`Client requested ${err.requestedPoints} when it has ${err.currentPoints} and maxPoints are ${err.maxPoints}`);
+    console.log(`Client requested ${err.requestedPoints} points when it has ${err.currentPoints} points and maxPoints are ${err.maxPoints}.`);
 });
 ```
 
