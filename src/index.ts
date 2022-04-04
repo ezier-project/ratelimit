@@ -12,9 +12,30 @@ interface EzLimit {
     points: number;
 }
 
+interface EzLimits {
+    [key: string]: EzLimit;
+}
+
 interface EzOptions {
     maxPoints: number;
     clearDelay: number;
+}
+
+interface EzMiddlewareClear {
+    rateLimits: EzLimits;
+}
+
+interface EzMiddlewareConsumption {
+    consumerKey: string;
+    rateLimit: EzLimit;
+    requestedPoints: number;
+}
+
+interface EzMiddleware {
+    beforeClear?: ({}: EzMiddlewareClear) => void;
+    afterClear?: ({}: EzMiddlewareClear) => void;
+    beforeConsumption?: ({}: EzMiddlewareConsumption) => void;
+    afterConsumption?: ({}: EzMiddlewareConsumption) => void;
 }
 
 export interface EzError extends Error {
@@ -47,8 +68,14 @@ export class EzRateLimiter {
     readonly clearDelay: number;
 
     private isStopped: boolean = true;
-    private rateLimits: { [key: string]: EzLimit } = {};
+    private rateLimits: EzLimits = {};
     private clearIntervalId: number = -1;
+
+    // Middleware
+    private beforeClear!: ({}: EzMiddlewareClear) => void;
+    private afterClear!: ({}: EzMiddlewareClear) => void;
+    private beforeConsumption!: ({}: EzMiddlewareConsumption) => void;
+    private afterConsumption!: ({}: EzMiddlewareConsumption) => void;
 
     constructor(options: EzOptions) {
         this.maxPoints = options.maxPoints;
@@ -92,7 +119,22 @@ export class EzRateLimiter {
                 points,
             };
 
+            if (this.beforeConsumption)
+                this.beforeConsumption({
+                    consumerKey,
+                    rateLimit: consumerData,
+                    requestedPoints: points,
+                });
+
             this.rateLimits[consumerKey] = consumerData;
+
+            if (this.afterConsumption)
+                this.afterConsumption({
+                    consumerKey,
+                    rateLimit: consumerData,
+                    requestedPoints: points,
+                });
+
             return consumerData;
         } else {
             // If new points will be higher than maxPoints prevent consumption
@@ -105,7 +147,22 @@ export class EzRateLimiter {
                 );
             } else {
                 // Checks passed, add points and consume
+                if (this.beforeConsumption)
+                    this.beforeConsumption({
+                        consumerKey,
+                        rateLimit: consumer,
+                        requestedPoints: points,
+                    });
+
                 this.rateLimits[consumerKey].points += points;
+
+                if (this.afterConsumption)
+                    this.afterConsumption({
+                        consumerKey,
+                        rateLimit: this.rateLimits[consumerKey],
+                        requestedPoints: points,
+                    });
+
                 return this.rateLimits[consumerKey];
             }
         }
@@ -117,9 +174,20 @@ export class EzRateLimiter {
         }
 
         this.clearIntervalId = setInterval(() => {
-            Object.keys(this.rateLimits).forEach(rateLimitKey => {
-                this.rateLimits[rateLimitKey].points = 0;
-            });
+            if(this.beforeClear)
+                this.beforeClear({
+                    rateLimits: this.rateLimits
+                });
+
+            for(const rateLimitId in this.rateLimits) {
+                // Don't delete key
+                this.rateLimits[rateLimitId].points = 0;
+            }
+
+            if(this.afterClear)
+                this.afterClear({
+                    rateLimits: this.rateLimits
+                });
         }, this.clearDelay);
 
         this.isStopped = false;
@@ -133,5 +201,14 @@ export class EzRateLimiter {
         clearInterval(this.clearIntervalId);
 
         this.isStopped = true;
+    }
+
+    $use(middleware: Partial<EzMiddleware>): void {
+        if (middleware.beforeClear) this.beforeClear = middleware.beforeClear;
+        if (middleware.afterClear) this.afterClear = middleware.afterClear;
+        if (middleware.beforeConsumption)
+            this.beforeConsumption = middleware.beforeConsumption;
+        if (middleware.afterConsumption)
+            this.afterConsumption = middleware.afterConsumption;
     }
 }
