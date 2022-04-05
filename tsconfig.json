@@ -8,8 +8,5 @@
         "baseUrl": "src",
         "removeComments": true
     },
-    "include": ["src/**/*"],
-    "ts-node": {
-        "swc": true
-    }
+    "include": ["src/**/*"]
 }
