@@ -76,3 +76,5 @@ ezLimiter.stop()
     console.log('The Ez ratelimiter has been stopped.');
 });
 ```
+
+<i>Made by [Shadofer](https://github.com/shadofer) with joy.</i>
