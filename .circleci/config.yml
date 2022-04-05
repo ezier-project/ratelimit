@@ -6,4 +6,8 @@ orbs:
 workflows:
   fronvo:
     jobs:
-      - node/test
+      - node/test:
+          filters:
+            branches:
+              only:
+                - master
