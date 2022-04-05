@@ -3,6 +3,11 @@
 // **************************************************************** //
 
 // Interfaces
+export enum EzState {
+    STOPPED,
+    RUNNING,
+}
+
 const EzErrors: { [key: string]: string } = {
     NOT_ENOUGH_POINTS:
         "The consumer doesn't have the required points for consumption.",
@@ -218,5 +223,9 @@ export class EzRateLimiter {
             this.beforeConsumption = middleware.beforeConsumption;
         if (middleware.afterConsumption)
             this.afterConsumption = middleware.afterConsumption;
+    }
+
+    getState(): EzState {
+        return this.isStopped ? EzState.STOPPED : EzState.RUNNING;
     }
 }
