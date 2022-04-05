@@ -203,6 +203,14 @@ export class EzRateLimiter {
         this.isStopped = true;
     }
 
+    async restart(): Promise<void> {
+        await this.stop();
+
+        this.rateLimits = {};
+
+        await this.start();
+    }
+
     $use(middleware: Partial<EzMiddleware>): void {
         if (middleware.beforeClear) this.beforeClear = middleware.beforeClear;
         if (middleware.afterClear) this.afterClear = middleware.afterClear;
