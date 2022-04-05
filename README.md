@@ -69,5 +69,8 @@ ezLimiter.$use({
 **Stop the rate-limiter:**
 
 ```ts
-ezLimiter.stop();
+ezLimiter.stop()
+.then(() => {
+    console.log('The Ez ratelimiter has been stopped.');
+});
 ```
