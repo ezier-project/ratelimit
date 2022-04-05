@@ -4,9 +4,9 @@
   "description": "The ez-iest ratelimiter in existance for nodejs.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r @swc-node/register -r tsconfig-paths/register \"src/test/**/*.test.ts\"",
     "format": "prettier --write src/",
-    "build": "tsc"
+    "build": "tsc --project tsconfig.build.json"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,15 @@
   },
   "homepage": "https://github.com/Fronvo/ez-ratelimiter#readme",
   "devDependencies": {
-    "prettier": "^2.6.1"
+    "@swc-node/register": "^1.4.2",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "@types/uuid": "^8.3.4",
+    "chai": "^4.3.6",
+    "mocha": "^9.2.2",
+    "prettier": "^2.6.1",
+    "tsconfig-paths": "^3.14.1",
+    "uuid": "^8.3.2"
   },
   "files": [
     "dist/**/*"
