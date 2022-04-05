@@ -82,9 +82,9 @@ export class EzRateLimiter {
     private beforeConsumption!: ({}: EzMiddlewareConsumption) => void;
     private afterConsumption!: ({}: EzMiddlewareConsumption) => void;
 
-    constructor(options: EzOptions) {
-        this.maxPoints = options.maxPoints;
-        this.clearDelay = options.clearDelay || 1000;
+    constructor(options?: Partial<EzOptions>) {
+        this.clearDelay = options?.clearDelay ? options.clearDelay : 1000;
+        this.maxPoints = options?.maxPoints ? options.maxPoints : 10;
 
         if (this.clearDelay < 1) {
             throw new Error('clearDelay should be higher than 1ms.');
