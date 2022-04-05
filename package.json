@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha -r @swc-node/register -r tsconfig-paths/register \"src/test/**/*.test.ts\"",
     "format": "prettier --write src/",
-    "build": "tsc --project tsconfig.build.json"
+    "build": "tsc --project tsconfig.build.json",
+    "docs": "typedoc src/main/index.ts"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
     "mocha": "^9.2.2",
     "prettier": "^2.6.1",
     "tsconfig-paths": "^3.14.1",
+    "typedoc": "^0.22.13",
     "uuid": "^8.3.2"
   },
   "files": [
