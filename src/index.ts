@@ -168,32 +168,32 @@ export class EzRateLimiter {
         }
     }
 
-    start(): void {
+    async start(): Promise<void> {
         if (!this.isStopped) {
             throw new Error('The rate-limiter has already started!');
         }
 
         this.clearIntervalId = setInterval(() => {
-            if(this.beforeClear)
+            if (this.beforeClear)
                 this.beforeClear({
-                    rateLimits: this.rateLimits
+                    rateLimits: this.rateLimits,
                 });
 
-            for(const rateLimitId in this.rateLimits) {
+            for (const rateLimitId in this.rateLimits) {
                 // Don't delete key
                 this.rateLimits[rateLimitId].points = 0;
             }
 
-            if(this.afterClear)
+            if (this.afterClear)
                 this.afterClear({
-                    rateLimits: this.rateLimits
+                    rateLimits: this.rateLimits,
                 });
         }, this.clearDelay);
 
         this.isStopped = false;
     }
 
-    stop(): void {
+    async stop(): Promise<void> {
         if (this.isStopped) {
             throw new Error('The rate-limiter is already stopped!');
         }
