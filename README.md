@@ -20,6 +20,9 @@
 npm i ez-ratelimiter
 ```
 
+# Documentation
+**Documentation for the Ez Ratelimiter can be found at https://fronvo.github.io/ez-ratelimiter/.**
+
 # Examples
 
 **Setup an instance of `EzRateLimiter`:**
