@@ -240,4 +240,14 @@ export class EzRateLimiter {
             }
         }
     }
+
+    getRatelimits(): EzLimit[] {
+        const rateLimitArray: EzLimit[] = [];
+
+        for (const limitKey in this.rateLimits) {
+            rateLimitArray.push(this.rateLimits[limitKey]);
+        }
+
+        return rateLimitArray;
+    }
 }
