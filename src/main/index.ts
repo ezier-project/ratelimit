@@ -2,6 +2,8 @@
 //      The ez-iest rate-limiter in existance, for nodejs.         //
 // **************************************************************** //
 
+import { v4 } from 'uuid';
+
 // Interfaces
 export enum EzState {
     STOPPED,
@@ -117,7 +119,7 @@ export class EzRateLimiter {
             );
         }
 
-        const consumer = this.rateLimits[consumerKey];
+        const consumer = this.getRatelimit(consumerKey);
 
         // If consumer doesnt exist, create
         if (!consumer) {
@@ -133,7 +135,7 @@ export class EzRateLimiter {
                     requestedPoints: points,
                 });
 
-            this.rateLimits[consumerKey] = consumerData;
+            this.rateLimits[v4()] = consumerData;
 
             if (this.afterConsumption)
                 this.afterConsumption({
@@ -161,16 +163,17 @@ export class EzRateLimiter {
                         requestedPoints: points,
                     });
 
-                this.rateLimits[consumerKey].points += points;
+                consumer.points += points;
+                this.setRatelimit(consumer);
 
                 if (this.afterConsumption)
                     this.afterConsumption({
                         consumerKey,
-                        rateLimit: this.rateLimits[consumerKey],
+                        rateLimit: consumer,
                         requestedPoints: points,
                     });
 
-                return this.rateLimits[consumerKey];
+                return consumer;
             }
         }
     }
@@ -249,5 +252,21 @@ export class EzRateLimiter {
         }
 
         return rateLimitArray;
+    }
+
+    private getRatelimitUUID(consumerKey: string): string | undefined {
+        for (const limitIndex in this.rateLimits) {
+            if (this.rateLimits[limitIndex].consumerKey == consumerKey) {
+                return limitIndex;
+            }
+        }
+    }
+
+    private setRatelimit(ezLimit: EzLimit): void {
+        const limitUUID = this.getRatelimitUUID(ezLimit.consumerKey);
+
+        if (!limitUUID) return;
+
+        this.rateLimits[limitUUID] = ezLimit;
     }
 }
