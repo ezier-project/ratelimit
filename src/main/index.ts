@@ -24,6 +24,13 @@ export interface EzLimits {
     [key: string]: EzLimit;
 }
 
+export interface EzResult {
+    consumerKey: string;
+    currentPoints: number;
+    remainingPoints: number;
+    maxPoints: number;
+}
+
 export interface EzOptions {
     maxPoints: number;
     clearDelay: number;
@@ -33,17 +40,23 @@ interface EzMiddlewareClear {
     rateLimits: EzLimits;
 }
 
-interface EzMiddlewareConsumption {
+interface EzMiddlewareBeforeConsumption {
     consumerKey: string;
-    rateLimit: EzLimit;
     requestedPoints: number;
+    rateLimit: EzLimit;
+}
+
+interface EzMiddlewareAfterConsumption {
+    consumerKey: string;
+    remainingPoints: number;
+    rateLimit: EzLimit;
 }
 
 interface EzMiddleware {
     beforeClear?: ({}: EzMiddlewareClear) => void;
     afterClear?: ({}: EzMiddlewareClear) => void;
-    beforeConsumption?: ({}: EzMiddlewareConsumption) => void;
-    afterConsumption?: ({}: EzMiddlewareConsumption) => void;
+    beforeConsumption?: ({}: EzMiddlewareBeforeConsumption) => void;
+    afterConsumption?: ({}: EzMiddlewareAfterConsumption) => void;
 }
 
 export interface EzError extends Error {
@@ -82,8 +95,8 @@ export class EzRateLimiter {
     // Middleware
     private beforeClear!: ({}: EzMiddlewareClear) => void;
     private afterClear!: ({}: EzMiddlewareClear) => void;
-    private beforeConsumption!: ({}: EzMiddlewareConsumption) => void;
-    private afterConsumption!: ({}: EzMiddlewareConsumption) => void;
+    private beforeConsumption!: ({}: EzMiddlewareBeforeConsumption) => void;
+    private afterConsumption!: ({}: EzMiddlewareAfterConsumption) => void;
 
     constructor(options?: Partial<EzOptions>) {
         this.clearDelay = options?.clearDelay ? options.clearDelay : 1000;
@@ -100,7 +113,10 @@ export class EzRateLimiter {
         this.start();
     }
 
-    async consumePoints(consumerKey: string, points: number): Promise<EzLimit> {
+    async consumePoints(
+        consumerKey: string,
+        points: number
+    ): Promise<EzResult> {
         if (this.isStopped) {
             throw new Error("Can't consume while the ratelimiter is stopped.");
         }
@@ -131,8 +147,8 @@ export class EzRateLimiter {
             if (this.beforeConsumption)
                 this.beforeConsumption({
                     consumerKey,
-                    rateLimit: consumerData,
                     requestedPoints: points,
+                    rateLimit: consumerData,
                 });
 
             this.rateLimits[v4()] = consumerData;
@@ -140,11 +156,16 @@ export class EzRateLimiter {
             if (this.afterConsumption)
                 this.afterConsumption({
                     consumerKey,
+                    remainingPoints: this.maxPoints - consumerData.points,
                     rateLimit: consumerData,
-                    requestedPoints: points,
                 });
 
-            return consumerData;
+            return {
+                consumerKey,
+                currentPoints: points,
+                maxPoints: this.maxPoints,
+                remainingPoints: this.maxPoints - consumerData.points,
+            };
         } else {
             // If new points will be higher than maxPoints prevent consumption
             if (consumer.points + points > this.maxPoints) {
@@ -169,11 +190,18 @@ export class EzRateLimiter {
                 if (this.afterConsumption)
                     this.afterConsumption({
                         consumerKey,
+                        remainingPoints:
+                            this.maxPoints - (consumer.points + points),
                         rateLimit: consumer,
-                        requestedPoints: points,
                     });
 
-                return consumer;
+                return {
+                    consumerKey,
+                    currentPoints: consumer.points + points,
+                    maxPoints: this.maxPoints,
+                    remainingPoints:
+                        this.maxPoints - (consumer.points + points),
+                };
             }
         }
     }
