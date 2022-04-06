@@ -13,15 +13,15 @@ const EzErrors: { [key: string]: string } = {
         "The consumer doesn't have the required points for consumption.",
 };
 
-interface EzLimit {
+export interface EzLimit {
     points: number;
 }
 
-interface EzLimits {
+export interface EzLimits {
     [key: string]: EzLimit;
 }
 
-interface EzOptions {
+export interface EzOptions {
     maxPoints: number;
     clearDelay: number;
 }
