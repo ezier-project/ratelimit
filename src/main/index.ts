@@ -74,7 +74,7 @@ export class EzRateLimiter {
 
     private isStopped: boolean = true;
     private rateLimits: EzLimits = {};
-    private clearIntervalId: number = -1;
+    private clearIntervalId!: number;
 
     // Middleware
     private beforeClear!: ({}: EzMiddlewareClear) => void;
