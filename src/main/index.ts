@@ -14,6 +14,7 @@ const EzErrors: { [key: string]: string } = {
 };
 
 export interface EzLimit {
+    consumerKey: string;
     points: number;
 }
 
@@ -121,6 +122,7 @@ export class EzRateLimiter {
         // If consumer doesnt exist, create
         if (!consumer) {
             const consumerData: EzLimit = {
+                consumerKey,
                 points,
             };
 
