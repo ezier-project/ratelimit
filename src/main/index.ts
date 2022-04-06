@@ -196,7 +196,7 @@ export class EzRateLimiter {
 
                 return {
                     consumerKey,
-                    currentPoints: consumer.points + points,
+                    currentPoints: consumer.points,
                     maxPoints: this.maxPoints,
                     remainingPoints: this.maxPoints - consumer.points,
                 };
