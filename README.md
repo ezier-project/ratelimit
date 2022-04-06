@@ -61,12 +61,12 @@ ezLimiter.consumePoints('client-uid', 11)
 **Register middleware:**
 ```ts
 ezLimiter.$use({
-    beforeConsumption: ({consumerKey, rateLimit, requestedPoints}) => {
+    beforeConsumption: ({consumerKey, requestedPoints}) => {
         console.log(`Attempting to consume ${requestedPoints} points for ${consumerKey}...`)
     },
 
-    afterConsumption: ({consumerKey, rateLimit, requestedPoints}) => {
-        console.log(`Consumed ${requestedPoints} points for ${consumerKey}.`);
+    afterConsumption: ({consumerKey, remainingPoints}) => {
+        console.log(`[${consumerKey}]: ${remainingPoints} points remaining.`);
     }
 });
 ```
