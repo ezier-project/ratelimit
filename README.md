@@ -1,4 +1,6 @@
-<h1 align='center'>Ez Ratelimiter</h1>
+<h1 align='center'><img src='https://i.ibb.co/BsqPmSN/ez-ratelimiter.png' alt='Ez Ratelimiter logo'>
+
+Ez Ratelimiter</h1>
 
 <h2 align='center'>The ez-iest ratelimiter for nodejs.</h2>
 
