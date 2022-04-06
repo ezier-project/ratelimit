@@ -230,4 +230,14 @@ export class EzRateLimiter {
     getState(): EzState {
         return this.isStopped ? EzState.STOPPED : EzState.RUNNING;
     }
+
+    getRatelimit(consumerKey: string): EzLimit | undefined {
+        for (const limitKey in this.rateLimits) {
+            const limitItem = this.rateLimits[limitKey];
+
+            if (limitItem.consumerKey == consumerKey) {
+                return limitItem;
+            }
+        }
+    }
 }
