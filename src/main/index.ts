@@ -190,8 +190,7 @@ export class EzRateLimiter {
                 if (this.afterConsumption)
                     this.afterConsumption({
                         consumerKey,
-                        remainingPoints:
-                            this.maxPoints - consumer.points,
+                        remainingPoints: this.maxPoints - consumer.points,
                         rateLimit: consumer,
                     });
 
@@ -199,8 +198,7 @@ export class EzRateLimiter {
                     consumerKey,
                     currentPoints: consumer.points + points,
                     maxPoints: this.maxPoints,
-                    remainingPoints:
-                        this.maxPoints - consumer.points,
+                    remainingPoints: this.maxPoints - consumer.points,
                 };
             }
         }
