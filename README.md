@@ -23,7 +23,7 @@ npm i ez-ratelimiter
 ```
 
 # Documentation
-**Documentation for the Ez Ratelimiter can be found at https://fronvo.github.io/ez-ratelimiter/.**
+**Documentation for the Ez Ratelimiter can be found at https://ez-packages.github.io/ez-ratelimiter/.**
 
 # Examples
 

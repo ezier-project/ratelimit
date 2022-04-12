@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fronvo/ez-ratelimiter.git"
+    "url": "git+https://github.com/EZ-packages/ez-ratelimiter.git"
   },
   "keywords": [
     "ez",
@@ -27,9 +27,9 @@
   "author": "Shadofer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Fronvo/ez-ratelimiter/issues"
+    "url": "https://github.com/EZ-packages/ez-ratelimiter/issues"
   },
-  "homepage": "https://github.com/Fronvo/ez-ratelimiter#readme",
+  "homepage": "https://github.com/EZ-packages/ez-ratelimiter#readme",
   "devDependencies": {
     "@swc-node/register": "^1.4.2",
     "@types/chai": "^4.3.0",
