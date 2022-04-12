@@ -1,6 +1,6 @@
 {
   "name": "ez-ratelimiter",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "The ez-iest ratelimiter in existance for nodejs.",
   "main": "dist/index.js",
   "scripts": {
