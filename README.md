@@ -1,4 +1,4 @@
-<h1 align='center'><img src='https://i.ibb.co/BsqPmSN/ez-ratelimiter.png' alt='Ez Ratelimiter logo'>
+<h1 align='center'><img src='https://github.com/ezier-project/ratelimit/blob/master/images/ratelimit.svg' alt='Ezier Ratelimiter logo'>
 
 Ez Ratelimiter</h1>
 
