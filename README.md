@@ -1,6 +1,6 @@
 <h1 align='center'><img src='https://github.com/ezier-project/ratelimit/blob/master/images/ratelimit.svg' alt='Ezier Ratelimiter logo'>
 
-Ez Ratelimiter</h1>
+Ezier Ratelimiter</h1>
 
 <h2 align='center'>An ezier ratelimiter for nodejs.</h2>
 
