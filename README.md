@@ -6,7 +6,7 @@ Ez Ratelimiter</h1>
 
 <h2 align='center'>
 
-![npm bundle size](https://img.shields.io/bundlephobia/min/ez-ratelimiter?style=for-the-badge) ![npm](https://img.shields.io/npm/dm/ez-ratelimiter?style=for-the-badge) ![NPM](https://img.shields.io/npm/l/ez-ratelimiter?style=for-the-badge) ![npm](https://img.shields.io/npm/v/ez-ratelimiter?style=for-the-badge)
+![npm bundle size](https://img.shields.io/bundlephobia/min/@ezier/ratelimit?style=for-the-badge) ![npm](https://img.shields.io/npm/dm/@ezier/ratelimit?style=for-the-badge) ![NPM](https://img.shields.io/npm/l/@ezier/ratelimit?style=for-the-badge) ![npm](https://img.shields.io/npm/v/@ezier/ratelimit?style=for-the-badge)
 
 # Why?
 
