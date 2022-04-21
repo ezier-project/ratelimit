@@ -3,61 +3,61 @@
 // **************************************************************** //
 
 // Interfaces
-export enum EzState {
+export enum EzierLimiterState {
     STOPPED,
     RUNNING,
 }
 
-const EzErrors: { [key: string]: string } = {
+const EzierLimiterErrors: { [key: string]: string } = {
     NOT_ENOUGH_POINTS:
         "The consumer doesn't have the required points for consumption.",
 };
 
-export interface EzLimit {
+export interface EzierLimiterLimit {
     consumerKey: string;
     points: number;
 }
 
-export interface EzLimits {
-    [key: string]: EzLimit;
+export interface EzierLimiterLimits {
+    [key: string]: EzierLimiterLimit;
 }
 
-export interface EzResult {
+export interface EzierLimiterResult {
     consumerKey: string;
     currentPoints: number;
     remainingPoints: number;
     maxPoints: number;
 }
 
-export interface EzOptions {
+export interface EzierLimiterOptions {
     maxPoints: number;
     clearDelay: number;
 }
 
-interface EzMiddlewareClear {
-    rateLimits: EzLimits;
+interface EzierLimiterMiddlewareClear {
+    rateLimits: EzierLimiterLimits;
 }
 
-interface EzMiddlewareBeforeConsumption {
+interface EzierLimiterMiddlewareBeforeConsumption {
     consumerKey: string;
     requestedPoints: number;
-    rateLimit: EzLimit;
+    rateLimit: EzierLimiterLimit;
 }
 
-interface EzMiddlewareAfterConsumption {
+interface EzierLimiterMiddlewareAfterConsumption {
     consumerKey: string;
     remainingPoints: number;
-    rateLimit: EzLimit;
+    rateLimit: EzierLimiterLimit;
 }
 
-interface EzMiddleware {
-    beforeClear?: ({}: EzMiddlewareClear) => void;
-    afterClear?: ({}: EzMiddlewareClear) => void;
-    beforeConsumption?: ({}: EzMiddlewareBeforeConsumption) => void;
-    afterConsumption?: ({}: EzMiddlewareAfterConsumption) => void;
+interface EzierLimiterMiddleware {
+    beforeClear?: ({}: EzierLimiterMiddlewareClear) => void;
+    afterClear?: ({}: EzierLimiterMiddlewareClear) => void;
+    beforeConsumption?: ({}: EzierLimiterMiddlewareBeforeConsumption) => void;
+    afterConsumption?: ({}: EzierLimiterMiddlewareAfterConsumption) => void;
 }
 
-export interface EzError extends Error {
+export interface EzierLimiterError extends Error {
     currentPoints: number;
     requestedPoints: number;
     maxPoints: number;
@@ -69,10 +69,10 @@ function generateError(
     currentPoints: number,
     requestedPoints: number,
     maxPoints: number
-): EzError {
-    const errorData: EzError = {
+): EzierLimiterError {
+    const errorData: EzierLimiterError = {
         name,
-        message: EzErrors[name],
+        message: EzierLimiterErrors[name],
         currentPoints,
         requestedPoints,
         maxPoints,
@@ -82,21 +82,21 @@ function generateError(
 }
 
 // Instances
-export class EzRateLimiter {
+export class EzierLimiter {
     readonly maxPoints: number;
     readonly clearDelay: number;
 
     private isStopped: boolean = true;
-    private rateLimits: EzLimits = {};
+    private rateLimits: EzierLimiterLimits = {};
     private clearIntervalId!: number;
 
     // Middleware
-    private beforeClear!: ({}: EzMiddlewareClear) => void;
-    private afterClear!: ({}: EzMiddlewareClear) => void;
-    private beforeConsumption!: ({}: EzMiddlewareBeforeConsumption) => void;
-    private afterConsumption!: ({}: EzMiddlewareAfterConsumption) => void;
+    private beforeClear!: ({}: EzierLimiterMiddlewareClear) => void;
+    private afterClear!: ({}: EzierLimiterMiddlewareClear) => void;
+    private beforeConsumption!: ({}: EzierLimiterMiddlewareBeforeConsumption) => void;
+    private afterConsumption!: ({}: EzierLimiterMiddlewareAfterConsumption) => void;
 
-    constructor(options?: Partial<EzOptions>) {
+    constructor(options?: Partial<EzierLimiterOptions>) {
         this.clearDelay = options?.clearDelay ? options.clearDelay : 1000;
         this.maxPoints = options?.maxPoints ? options.maxPoints : 10;
 
@@ -114,7 +114,7 @@ export class EzRateLimiter {
     async consumePoints(
         consumerKey: string,
         points: number
-    ): Promise<EzResult> {
+    ): Promise<EzierLimiterResult> {
         if (this.isStopped) {
             throw new Error("Can't consume while the ratelimiter is stopped.");
         }
@@ -137,7 +137,7 @@ export class EzRateLimiter {
 
         // If consumer doesnt exist, create
         if (!consumer) {
-            const consumerData: EzLimit = {
+            const consumerData: EzierLimiterLimit = {
                 consumerKey,
                 points,
             };
@@ -245,7 +245,7 @@ export class EzRateLimiter {
         await this.start();
     }
 
-    $use(middleware: Partial<EzMiddleware>): void {
+    $use(middleware: Partial<EzierLimiterMiddleware>): void {
         if (middleware.beforeClear) this.beforeClear = middleware.beforeClear;
         if (middleware.afterClear) this.afterClear = middleware.afterClear;
         if (middleware.beforeConsumption)
@@ -254,16 +254,18 @@ export class EzRateLimiter {
             this.afterConsumption = middleware.afterConsumption;
     }
 
-    getState(): EzState {
-        return this.isStopped ? EzState.STOPPED : EzState.RUNNING;
+    getState(): EzierLimiterState {
+        return this.isStopped
+            ? EzierLimiterState.STOPPED
+            : EzierLimiterState.RUNNING;
     }
 
-    getRatelimit(consumerKey: string): EzLimit | undefined {
+    getRatelimit(consumerKey: string): EzierLimiterLimit | undefined {
         return this.rateLimits[consumerKey];
     }
 
-    getRatelimits(): EzLimit[] {
-        const rateLimitArray: EzLimit[] = [];
+    getRatelimits(): EzierLimiterLimit[] {
+        const rateLimitArray: EzierLimiterLimit[] = [];
 
         for (const limitKey in this.rateLimits) {
             rateLimitArray.push(this.rateLimits[limitKey]);

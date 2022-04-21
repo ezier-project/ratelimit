@@ -1,11 +1,11 @@
-import { EzRateLimiter } from 'main/index';
+import { EzierLimiter } from 'main/index';
 
 it('test states', done => {
-    const ezLimiter = new EzRateLimiter();
+    const ezierLimiter = new EzierLimiter();
 
-    ezLimiter.start().catch(() => {
-        ezLimiter.stop().then(() => {
-            ezLimiter.stop().catch(() => {
+    ezierLimiter.start().catch(() => {
+        ezierLimiter.stop().then(() => {
+            ezierLimiter.stop().catch(() => {
                 done();
             });
         });

@@ -1,14 +1,14 @@
-import { EzRateLimiter } from 'main/index';
+import { EzierLimiter } from 'main/index';
 
 function testConstructorMaxPoints(): void {
-    new EzRateLimiter({
+    new EzierLimiter({
         clearDelay: 1000,
         maxPoints: -1,
     });
 }
 
 function testConstructorClearDelay(): void {
-    new EzRateLimiter({
+    new EzierLimiter({
         clearDelay: -1,
         maxPoints: 10,
     });

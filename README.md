@@ -2,7 +2,7 @@
 
 Ez Ratelimiter</h1>
 
-<h2 align='center'>The ez-iest ratelimiter for nodejs.</h2>
+<h2 align='center'>An ezier ratelimiter for nodejs.</h2>
 
 <h2 align='center'>
 
@@ -19,20 +19,20 @@ Ez Ratelimiter</h1>
 # Installing
 
 ```
-npm i ez-ratelimiter
+npm i @ezier/ratelimit
 ```
 
 # Documentation
-**Documentation for the Ez Ratelimiter can be found at https://ez-packages.github.io/ez-ratelimiter/.**
+**Documentation for the Ezier Ratelimiter can be found at https://ezier-project.github.io/ratelimit/.**
 
 # Examples
 
-**Setup an instance of `EzRateLimiter`:**
+**Setup an instance of `EzierLimiter`:**
 
 ```ts
-import { EzRateLimiter } from 'ez-ratelimiter';
+import { EzierLimiter } from '@ezier/ratelimit';
 
-const ezLimiter = new EzRateLimiter({
+const ezierLimiter = new EzierLimiter({
     maxPoints: 10,
     clearDelay: 1000
 });
@@ -40,18 +40,18 @@ const ezLimiter = new EzRateLimiter({
 
 **Consume points for a client:**
 ```ts
-ezLimiter.consumePoints('client-uid', 5);
+ezierLimiter.consumePoints('client-uid', 5);
 ```
 
 **Handle a consumption error:**
 
 ```ts
-import { EzError } from 'ez-ratelimiter';
+import { EzierLimiterError } from '@ezier/ratelimit';
 
-ezLimiter.consumePoints('client-uid', 11)
+ezierLimiter.consumePoints('client-uid', 11)
 
-.catch((err: EzError) => {
-    // EzError check
+.catch((err: EzierLimiterError) => {
+    // EzierLimiterError check
     if(err.currentPoints) {
         console.log(`Client requested ${err.requestedPoints} points when it has ${err.currentPoints} points and maxPoints are ${err.maxPoints}.`);
     } else {
@@ -62,7 +62,7 @@ ezLimiter.consumePoints('client-uid', 11)
 
 **Register middleware:**
 ```ts
-ezLimiter.$use({
+ezierLimiter.$use({
     beforeConsumption: ({consumerKey, requestedPoints}) => {
         console.log(`Attempting to consume ${requestedPoints} points for ${consumerKey}...`)
     },
@@ -76,9 +76,9 @@ ezLimiter.$use({
 **Stop the rate-limiter:**
 
 ```ts
-ezLimiter.stop()
+ezierLimiter.stop()
 .then(() => {
-    console.log('The Ez ratelimiter has been stopped.');
+    console.log('The Ezier Ratelimiter has been stopped.');
 });
 ```
 

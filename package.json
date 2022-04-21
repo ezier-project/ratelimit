@@ -1,7 +1,7 @@
 {
-  "name": "ez-ratelimiter",
+  "name": "@ezier/ratelimit",
   "version": "0.3.0",
-  "description": "The ez-iest ratelimiter in existance for nodejs.",
+  "description": "An ezier ratelimiter for nodejs.",
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha -r @swc-node/register -r tsconfig-paths/register \"src/test/**/*.test.ts\"",
@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EZ-packages/ez-ratelimiter.git"
+    "url": "git+https://github.com/ezier-project/ratelimit.git"
   },
   "keywords": [
-    "ez",
+    "ezier",
     "ratelimiter",
     "simple",
     "nodejs",
@@ -27,9 +27,9 @@
   "author": "Shadofer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/EZ-packages/ez-ratelimiter/issues"
+    "url": "https://github.com/ezier-project/ratelimit/issues"
   },
-  "homepage": "https://github.com/EZ-packages/ez-ratelimiter#readme",
+  "homepage": "https://github.com/ezier-project/ratelimit#readme",
   "devDependencies": {
     "@swc-node/register": "^1.4.2",
     "@types/chai": "^4.3.0",
