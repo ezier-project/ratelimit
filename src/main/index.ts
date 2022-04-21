@@ -1,5 +1,5 @@
 // **************************************************************** //
-//      The ez-iest rate-limiter in existance, for nodejs.         //
+//               An ezier ratelimiter for nodejs.                   //
 // **************************************************************** //
 
 // Interfaces
