@@ -8,6 +8,8 @@ Ezier Ratelimiter</h1>
 
 ![npm bundle size](https://img.shields.io/bundlephobia/min/@ezier/ratelimit?style=for-the-badge) ![npm](https://img.shields.io/npm/dm/@ezier/ratelimit?style=for-the-badge) ![NPM](https://img.shields.io/npm/l/@ezier/ratelimit?style=for-the-badge) ![npm](https://img.shields.io/npm/v/@ezier/ratelimit?style=for-the-badge)
 
+</h2>
+
 # Why?
 
 **This rate-limiter attempts to keep it e-z, with no additional functions.**
