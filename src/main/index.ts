@@ -208,20 +208,7 @@ export class EzierLimiter {
         }
 
         this.clearIntervalId = setInterval(() => {
-            if (this.beforeClear)
-                this.beforeClear({
-                    rateLimits: this.rateLimits,
-                });
-
-            for (const rateLimitId in this.rateLimits) {
-                // Don't delete key
-                this.rateLimits[rateLimitId].points = 0;
-            }
-
-            if (this.afterClear)
-                this.afterClear({
-                    rateLimits: this.rateLimits,
-                });
+            this.clearRatelimits();
         }, this.clearDelay);
 
         this.isStopped = false;
@@ -272,5 +259,23 @@ export class EzierLimiter {
         }
 
         return rateLimitArray;
+    }
+
+    clearRatelimits(): void {
+        // This wont affect the auto clear delay
+        if (this.beforeClear)
+            this.beforeClear({
+                rateLimits: this.rateLimits,
+            });
+
+        for (const rateLimitId in this.rateLimits) {
+            // Don't delete key
+            this.rateLimits[rateLimitId].points = 0;
+        }
+
+        if (this.afterClear)
+            this.afterClear({
+                rateLimits: this.rateLimits,
+            });
     }
 }
