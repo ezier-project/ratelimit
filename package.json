@@ -7,7 +7,8 @@
     "test": "mocha -r @swc-node/register -r tsconfig-paths/register \"src/test/**/*.test.ts\"",
     "format": "prettier --write src/",
     "build": "tsc --project tsconfig.build.json",
-    "docs": "typedoc src/main/index.ts"
+    "docs": "typedoc src/main/index.ts",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -42,5 +43,8 @@
   },
   "files": [
     "dist/**/*"
-  ]
+  ],
+  "dependencies": {
+    "husky": "^7.0.4"
+  }
 }
