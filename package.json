@@ -1,6 +1,6 @@
 {
   "name": "@ezier/ratelimit",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "An ezier ratelimiter for nodejs.",
   "main": "dist/index.js",
   "scripts": {
