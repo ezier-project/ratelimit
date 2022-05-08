@@ -261,6 +261,14 @@ export class EzierLimiter {
         return rateLimitArray;
     }
 
+    clearRatelimit(consumerKey: string, force?: boolean): void {
+        if (!this.getRatelimit(consumerKey) && !force) {
+            throw new Error('No such consumerKey exists.');
+        }
+
+        delete this.rateLimits[consumerKey];
+    }
+
     clearRatelimits(): void {
         // This wont affect the auto clear delay
         if (this.beforeClear)
