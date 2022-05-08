@@ -210,7 +210,7 @@ export class EzierLimiter {
         }
 
         this.clearIntervalId = setInterval(() => {
-            this.clearRatelimits();
+            this.clearRateLimits();
         }, this.clearDelay);
 
         this.isStopped = false;
@@ -249,11 +249,11 @@ export class EzierLimiter {
             : EzierLimiterState.RUNNING;
     }
 
-    getRatelimit(consumerKey: string): EzierLimiterLimit | undefined {
+    getRateLimit(consumerKey: string): EzierLimiterLimit | undefined {
         return this.rateLimits[consumerKey];
     }
 
-    getRatelimits(): EzierLimiterLimit[] {
+    getRateLimits(): EzierLimiterLimit[] {
         const rateLimitArray: EzierLimiterLimit[] = [];
 
         for (const limitKey in this.rateLimits) {
@@ -263,15 +263,15 @@ export class EzierLimiter {
         return rateLimitArray;
     }
 
-    clearRatelimit(consumerKey: string, force?: boolean): void {
-        if (!this.getRatelimit(consumerKey) && !force) {
+    clearRateLimit(consumerKey: string, force?: boolean): void {
+        if (!this.getRateLimit(consumerKey) && !force) {
             throw new Error('No such consumerKey exists.');
         }
 
         delete this.rateLimits[consumerKey];
     }
 
-    clearRatelimits(): void {
+    clearRateLimits(): void {
         // This wont affect the auto clear delay
         if (this.beforeClear)
             this.beforeClear({
