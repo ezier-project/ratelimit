@@ -124,7 +124,9 @@ export class EzierLimiter {
         }
 
         if (points < 1) {
-            throw new Error("Can't consume less than 1 point.");
+            throw new Error(
+                "Can't consume less than 1 point. Instead, use createRateLimit"
+            );
         }
 
         if (this.maxPoints < points) {
@@ -285,5 +287,14 @@ export class EzierLimiter {
             this.afterClear({
                 rateLimits: this.rateLimits,
             });
+    }
+
+    createRateLimit(consumerKey: string): EzierLimiterLimit {
+        this.rateLimits[consumerKey] = {
+            consumerKey,
+            points: 0,
+        };
+
+        return this.rateLimits[consumerKey];
     }
 }
